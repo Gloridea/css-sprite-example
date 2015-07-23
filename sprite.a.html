@@ -1,0 +1,292 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Sprite Image Sample</title>
+	<style type="text/css">
+	span { font-size:9pt; }
+	ul.toolbar {
+		/* border:1px solid red; */ 
+		list-style:none; 
+		overflow:hidden; 
+		width:600px; 
+		margin:0; 
+		padding:0;
+	}
+
+	ul.toolbar > li {
+		/* border: 1px solid blue; */
+		display: block;
+		position: relative; 
+		float: left; 
+		height: 60px;
+		display: block;
+		margin: 0 5px 0 5px;
+		text-align: center;
+	}
+
+	ul.toolbar > li > a > span.sprite {
+		/* border: 1px solid pink; */
+		display: block;
+		width: 52px; 
+		height: 37px;
+		cursor: pointer;
+		background-image: url(svc_sprite_all.gif);
+	}
+
+	ul.toolbar > li > a > span.sprite.item1 { background-position: 0 0; }
+	ul.toolbar > li > a > span.sprite.item2 { background-position: 0 -37px; }
+	ul.toolbar > li > a > span.sprite.item3 { background-position: 0 -74px; }
+	ul.toolbar > li > a > span.sprite.item4 { background-position: 0 -111px; }
+	ul.toolbar > li > a > span.sprite.item5 { background-position: 0 -148px; }
+	ul.toolbar > li > a > span.sprite.item6 { background-position: 0 -185px; }
+	ul.toolbar > li > a > span.sprite.item7 { background-position: 0 -222px; }
+
+	</style>
+</head>
+<body>
+	<ul class="toolbar">
+		<li>
+			<a href="mail">
+				<span class="sprite item1"></span>
+				<span>Gmail</span>
+			</a>
+		</li>
+		<li>
+			<a href="calendar">
+				<span class="sprite item2"></span>
+				<span>Calendar</span>
+			</a>
+		</li>
+		<li>
+			<a href="toolbar">
+				<span class="sprite item3"></span>
+				<span>툴바</span>
+			</a>
+		</li>
+		<li>
+			<a href="desktop">
+				<span class="sprite item4"></span>
+				<span>데스크톱</span>
+			</a>
+		</li>
+		<li>
+			<a href="picasa">
+				<span class="sprite item5"></span>
+				<span>Picasa</span>
+			</a>
+		</li>
+		<li>
+			<a href="youtube">
+				<span class="sprite item6"></span>
+				<span>YouTube</span>
+			</a>
+		</li>
+		<li>
+			<a href="note">
+				<span class="sprite item7"></span>
+				<span>노트</span>
+			</a>
+		</li>
+	</ul>
+
+	<button onclick="sprite2.spriteForward()">Forward</button>
+	<button onclick="sprite2.spriteBackward()">Backward</button>
+</body>
+<script type="text/javascript">
+
+var thumb = document.querySelector(".sprite.item1");
+var WIDTH = 52;
+var HEIGHT = 37;
+var SPRITE_COUNT = 7;
+var timerId = null;
+
+function spriteForward() {
+	resetTimer();
+	var i = 0;
+
+	window.timerId = setInterval(function() {
+		var idx = getIndex();
+
+		if (++idx.x < SPRITE_COUNT) {
+			setIndex(idx);
+		} else {
+			resetTimer();
+		}
+	}, 60);
+}
+
+function spriteBackward() {
+	resetTimer();
+	var i = SPRITE_COUNT;
+
+	window.timerId = setInterval(function() {
+		var idx = getIndex();
+
+		if (--idx.x >= 0) {
+			setIndex(idx);		
+		} else {
+			resetTimer();
+		}
+	}, 60);
+}
+
+function resetTimer() {
+	if (window.timerId != null) {
+		clearInterval(window.timerId);
+		window.timerId = null;
+	}
+}
+
+function setIndex(idx) {
+	var left = idx.x * -WIDTH;
+	var top = idx.y * -HEIGHT;
+	thumb.style.backgroundPosition = left + "px " + top + "px";
+	console.log(thumb.style.backgroundPosition);
+}
+
+function getIndex() {
+	var style = window.getComputedStyle(thumb);
+	var pos = style.backgroundPosition.split(" ");
+
+	var x = parseInt(pos[0]) / WIDTH;
+	var y = parseInt(pos[1]) / HEIGHT;
+
+	return {
+		x: Math.abs(x),
+		y: Math.abs(y)
+	};
+
+}
+
+thumb.addEventListener("mouseover", spriteForward, false);
+thumb.addEventListener("mouseout", spriteBackward, false);
+
+
+var sprite2 = {
+	thumb: document.querySelector(".sprite.item2"),
+	timerId: null,
+
+	setIndex: function(idx) {
+		var left = idx.x * -WIDTH;
+		var top = idx.y * -HEIGHT;
+		this.thumb.style.backgroundPosition = left + "px " + top + "px";
+		console.log(this.thumb.style.backgroundPosition);
+	},
+
+	getIndex: function() {
+		var style = window.getComputedStyle(this.thumb);
+		var pos = style.backgroundPosition.split(" ");
+
+		var x = parseInt(pos[0]) / WIDTH;
+		var y = parseInt(pos[1]) / HEIGHT;
+
+		return {
+			x: Math.abs(x),
+			y: Math.abs(y)
+		};
+	},
+
+	sprite: function(moveNext) {
+		this.resetTimer();
+		
+		this.timerId = setInterval(function() {
+			var idx = this.getIndex();
+
+			if (moveNext(idx)) {
+				this.setIndex(idx);		
+			} else {
+				this.resetTimer();
+			}
+		}.bind(this), 60);
+	},
+
+	spriteForward: function() {
+		this.sprite(function(idx) {
+			return ++idx.x < SPRITE_COUNT;	
+		});
+	},
+
+	spriteBackward: function() {
+		this.sprite(function(idx) {
+			return --idx.x >= 0;	
+		});
+	},
+
+	resetTimer: function() {
+		if (this.timerId != null) {
+			clearInterval(this.timerId);
+			this.timerId = null;
+		}
+	},
+
+	bindEvents: function() {
+		this.thumb.addEventListener("mouseover", this.spriteForward.bind(this), false);
+		this.thumb.addEventListener("mouseout", this.spriteBackward.bind(this), false);
+	}
+};
+
+sprite2.bindEvents();
+
+// sprite3 
+var sprite3 = {};
+
+for (var name in sprite2) {
+	sprite3[name] = sprite2[name];
+}
+
+sprite3.thumb = document.querySelector(".sprite.item3");
+sprite3.bindEvents();
+
+sprite3.clone = function(selector) {
+	var newObj = {};
+
+	for (var name in this) {
+		newObj[name] = this[name];
+	}
+
+	newObj.thumb = document.querySelector(selector);
+	newObj.bindEvents();
+
+	return newObj;
+}
+
+// sprite4
+var sprite4 = sprite3.clone(".sprite.item4");
+
+
+// sprite5
+function Sprite(selector) {
+	this.thumb = document.querySelector(selector);
+	this.bindEvents();
+}
+
+Sprite.prototype = sprite2;
+
+var sprite5 = new Sprite(".sprite.item5");
+var sprite6 = new Sprite(".sprite.item6");
+var sprite7 = new Sprite(".sprite.item7");
+
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

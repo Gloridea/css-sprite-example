@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Sprite Image Sample</title>
+<style type="text/css">
+span { font-size:9pt; }
+ul.toolbar {
+	/* border:1px solid red; */ 
+	list-style:none; 
+	overflow:hidden; 
+	width:600px; 
+	margin:0; 
+	padding:0;
+}
+
+ul.toolbar > li {
+	/* border: 1px solid blue; */
+	display: block;
+	position: relative; 
+	float: left; 
+	height: 60px;
+	display: block;
+	margin: 0 5px 0 5px;
+	text-align: center;
+}
+
+ul.toolbar > li > a > span.sprite {
+	/* border: 1px solid pink; */
+	display: block;
+	width: 52px; 
+	height: 37px;
+	cursor: pointer;
+	background-image: url(svc_sprite_all.gif);
+}
+
+ul.toolbar > li > a > span.sprite.item1 { background-position: 0 0; }
+ul.toolbar > li > a > span.sprite.item2 { background-position: 0 -37px; }
+ul.toolbar > li > a > span.sprite.item3 { background-position: 0 -74px; }
+ul.toolbar > li > a > span.sprite.item4 { background-position: 0 -111px; }
+ul.toolbar > li > a > span.sprite.item5 { background-position: 0 -148px; }
+ul.toolbar > li > a > span.sprite.item6 { background-position: 0 -185px; }
+ul.toolbar > li > a > span.sprite.item7 { background-position: 0 -222px; }
+
+</style>
+</head>
+<body>
+	<ul class="toolbar">
+	<li>
+		<a href="mail">
+			<span class="sprite item1"></span>
+			<span>Gmail</span>
+		</a>
+	</li>
+	<li>
+		<a href="calendar">
+			<span class="sprite item2"></span>
+			<span>Calendar</span>
+		</a>
+	</li>
+	<li>
+		<a href="toolbar">
+			<span class="sprite item3"></span>
+			<span>툴바</span>
+		</a>
+	</li>
+	<li>
+		<a href="desktop">
+			<span class="sprite item4"></span>
+			<span>데스크톱</span>
+		</a>
+	</li>
+	<li>
+		<a href="picasa">
+			<span class="sprite item5"></span>
+			<span>Picasa</span>
+		</a>
+	</li>
+	<li>
+		<a href="youtube">
+			<span class="sprite item6"></span>
+			<span>YouTube</span>
+		</a>
+	</li>
+	<li>
+		<a href="note">
+			<span class="sprite item7"></span>
+			<span>노트</span>
+		</a>
+	</li>
+	</ul>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
